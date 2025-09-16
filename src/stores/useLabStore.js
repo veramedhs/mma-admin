@@ -1,6 +1,5 @@
-// src/stores/useLabStore.js
 import {create} from 'zustand';
-import axios from 'axios';
+import { apiClient } from '../api/apiClient'; // Assuming you use a central apiClient
 import toast from 'react-hot-toast';
 
 const useLabStore = create((set) => ({
@@ -16,14 +15,15 @@ const useLabStore = create((set) => ({
       postalCode: '',
     },
     servicesOffered: '', // Will be sent as a comma-separated string
-    operatingHours: '', // e.g., "Mon-Fri 9:00 AM - 5:00 PM"
+    operatingHours: '',
     accreditation: '',
     labLogo: null, // To hold the file object
+    isVerified: false, // Added for admin control
   },
   loading: false,
   error: null,
 
-  // Action to update form data
+  // Action to update form data (handles text, number, and checkbox inputs)
   setFormData: (field, value) =>
     set((state) => ({
       formData: { ...state.formData, [field]: value },
@@ -36,6 +36,12 @@ const useLabStore = create((set) => ({
         ...state.formData,
         address: { ...state.formData.address, [field]: value },
       },
+    })),
+
+  // Action to handle the logo file input
+  setLabLogo: (file) =>
+    set((state) => ({
+      formData: { ...state.formData, [field]: value },
     })),
 
   // Action to handle the logo file input
@@ -56,7 +62,10 @@ const useLabStore = create((set) => ({
         operatingHours: '',
         accreditation: '',
         labLogo: null,
+        isVerified: false, // Reset the verification status
       },
+      loading: false,
+      error: null,
     }),
 
   // Async action to create a new lab via API call
@@ -65,20 +74,23 @@ const useLabStore = create((set) => ({
     try {
       const postData = new FormData();
 
-      // Append all form fields to the FormData object
-      Object.keys(formData).forEach((key) => {
-        const value = formData[key];
-        if (key === 'labLogo' && value) {
-          postData.append('labLogo', value); // Append the file
-        } else if (typeof value === 'object' && value !== null) {
-          postData.append(key, JSON.stringify(value)); // Stringify the address object
-        } else if (value) {
-          postData.append(key, value);
-        }
-      });
+      // Append all fields. Send boolean as string 'true'/'false'.
+      postData.append('labName', formData.labName);
+      postData.append('email', formData.email);
+      postData.append('phone', formData.phone);
+      postData.append('address', JSON.stringify(formData.address));
+      postData.append('servicesOffered', formData.servicesOffered);
+      postData.append('operatingHours', formData.operatingHours);
+      postData.append('accreditation', formData.accreditation);
+      postData.append('isVerified', formData.isVerified ? 'true' : 'false');
 
-      // NOTE: Replace with your actual API endpoint for creating a lab
-      const response = await axios.post('/api/admin/labs', postData, {
+      // Append the file only if it exists
+      if (formData.labLogo) {
+        postData.append('labLogo', formData.labLogo);
+      }
+
+      // Use your actual API endpoint
+      const response = await apiClient.post('/api/admin/labs/create', postData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
