@@ -17,12 +17,12 @@ export const navbarLinks = [
         ],
     },
     {
-        title: "Customers",
+        title: "Doctors",
         links: [
             {
-                label: "Doctors",
+                label: "Doctors list",
                 icon: Users,
-                path: "/doctors",
+                path: "/doctors-list",
             },
             {
                 label: "New doctors",
@@ -56,16 +56,7 @@ export const navbarLinks = [
             },
         ],
     },
-    {
-        title: "Settings",
-        links: [
-            {
-                label: "Settings",
-                icon: Settings,
-                path: "/settings",
-            },
-        ],
-    },
+  
 ];
 
 export const overviewData = [
