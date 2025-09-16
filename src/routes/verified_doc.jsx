@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from "react";
 import { CSVLink } from "react-csv";
-// ✅ 1. Import routing hooks
 import { useNavigate, useLocation } from "react-router-dom";
 
-// ... (initialDoctors data remains the same)
+// ✅ Initial dummy doctors data
 const initialDoctors = [
   {
     id: 1,
@@ -55,22 +54,17 @@ const initialDoctors = [
   },
 ];
 
-
 const Verified_doc = () => {
+  // All state and logic remains the same
   const [doctors, setDoctors] = useState(initialDoctors);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'ascending' });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
-  // ✅ 2. Initialize routing hooks
   const navigate = useNavigate();
   const location = useLocation();
-
-  // The 'isModalOpen' state is now derived from the URL
   const isModalOpen = location.pathname === '/new-doctors';
-
   const [newDoctor, setNewDoctor] = useState({ name: "", email: "", phone: "", specialization: "", verified: false });
 
   const handleDelete = (doctorId) => {
@@ -92,8 +86,7 @@ const Verified_doc = () => {
     const newId = doctors.length > 0 ? Math.max(...doctors.map(d => d.id)) + 1 : 1;
     setDoctors([...doctors, { ...newDoctor, id: newId }]);
     setNewDoctor({ name: "", email: "", phone: "", specialization: "", verified: false });
-    // ✅ 3. Navigate back after adding
-    navigate(-1); // Go back to the previous page (the doctor list)
+    navigate(-1);
   };
 
   const handleNewDoctorChange = (e) => {
@@ -160,13 +153,13 @@ const Verified_doc = () => {
   ];
 
   return (
-    <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div className="p-4 md:p-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
       
-      <div className="flex justify-between items-baseline mb-4">
-        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
+      <div className="flex flex-col sm:flex-row justify-between sm:items-baseline mb-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200">
           Doctors Management
         </h2>
-        <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+        <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mt-1 sm:mt-0">
             {processedDoctors.length > 0 
               ? `Showing ${indexOfFirstItem + 1}-${indexOfFirstItem + currentItems.length} of ${processedDoctors.length}` 
               : "No doctors found"}
@@ -188,17 +181,16 @@ const Verified_doc = () => {
           </div>
       </div>
 
-
-      <div className="flex justify-between items-center mb-6 bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
-        <div className="flex items-center">
+      <div className="flex flex-col lg:flex-row justify-between items-center gap-4 mb-6 bg-white dark:bg-gray-800 p-4 rounded-xl shadow">
+        <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
             <input
               type="text"
               placeholder="Search..."
-              className="p-2 border border-gray-300 dark:border-gray-600 rounded-md w-64 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
+              className="p-2 border border-gray-300 dark:border-gray-600 rounded-md w-full sm:w-64 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
               onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
             />
             <select
-              className="p-2 border border-gray-300 dark:border-gray-600 rounded-md ml-4 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
+              className="p-2 border border-gray-300 dark:border-gray-600 rounded-md w-full sm:w-auto bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200"
               onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
             >
               <option value="all">All Statuses</option>
@@ -207,58 +199,57 @@ const Verified_doc = () => {
             </select>
         </div>
         
-        <div>
+        <div className="flex items-center gap-2 w-full lg:w-auto">
           <CSVLink
             data={processedDoctors}
             headers={csvHeaders}
             filename={"doctors-list.csv"}
-            className="px-4 py-2 rounded-md font-semibold bg-blue-600 text-white hover:bg-blue-700 transition mr-2"
+            className="w-1/2 lg:w-auto text-center px-4 py-2 rounded-md font-semibold bg-blue-600 text-white hover:bg-blue-700 transition"
           >
             Export CSV
           </CSVLink>
-          {/* ✅ 4. This button now navigates to the new route */}
           <button 
             onClick={() => navigate('/new-doctors')}
-            className="px-4 py-2 rounded-md font-semibold bg-green-600 text-white hover:bg-green-700 transition"
+            className="w-1/2 lg:w-auto px-4 py-2 rounded-md font-semibold bg-green-600 text-white hover:bg-green-700 transition"
           >
-            Add New Doctor
+            Add New
           </button>
         </div>
       </div>
 
       <div className="overflow-x-auto shadow-lg rounded-xl">
-        <table className="w-full border-collapse text-sm bg-white dark:bg-gray-800">
-            <thead className="bg-blue-600 text-white text-left">
+        <table className="w-full border-collapse bg-white dark:bg-gray-800">
+            <thead className="bg-blue-600 text-white text-left text-xs">
                 <tr>
-                    <th className="p-3">ID</th>
-                    <th className="p-3 cursor-pointer" onClick={() => requestSort('name')}>Name {getSortIndicator('name')}</th>
-                    <th className="p-3">Email</th>
-                    <th className="p-3">Phone</th>
-                    <th className="p-3 cursor-pointer" onClick={() => requestSort('specialization')}>Specialization {getSortIndicator('specialization')}</th>
-                    <th className="p-3">Status</th>
-                    <th className="p-3">Actions</th>
+                    <th className="p-2 md:p-3">ID</th>
+                    <th className="p-2 md:p-3 cursor-pointer" onClick={() => requestSort('name')}>Name {getSortIndicator('name')}</th>
+                    <th className="p-2 md:p-3">Email</th>
+                    <th className="p-2 md:p-3">Phone</th>
+                    <th className="p-2 md:p-3 cursor-pointer" onClick={() => requestSort('specialization')}>Specialization {getSortIndicator('specialization')}</th>
+                    <th className="p-2 md:p-3">Status</th>
+                    <th className="p-2 md:p-3">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody className="text-xs md:text-sm">
                 {currentItems.length > 0 ? (
                 currentItems.map((doctor) => (
                 <tr key={doctor.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                    <td className="p-3 font-medium text-gray-700 dark:text-gray-300">{doctor.id}</td>
-                    <td className="p-3 text-gray-800 dark:text-gray-200">{doctor.name}</td>
-                    <td className="p-3 text-gray-600 dark:text-gray-400">{doctor.email}</td>
-                    <td className="p-3 text-gray-600 dark:text-gray-400">{doctor.phone}</td>
-                    <td className="p-3 text-gray-800 dark:text-gray-200">{doctor.specialization}</td>
-                    <td className="p-3">
+                    <td className="p-2 md:p-3 font-medium text-gray-700 dark:text-gray-300">{doctor.id}</td>
+                    <td className="p-2 md:p-3 text-gray-800 dark:text-gray-200">{doctor.name}</td>
+                    <td className="p-2 md:p-3 text-gray-600 dark:text-gray-400">{doctor.email}</td>
+                    <td className="p-2 md:p-3 text-gray-600 dark:text-gray-400">{doctor.phone}</td>
+                    <td className="p-2 md:p-3 text-gray-800 dark:text-gray-200">{doctor.specialization}</td>
+                    <td className="p-2 md:p-3">
                         <div className="flex items-center">
                             <button onClick={() => handleStatusToggle(doctor.id)} className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors duration-300 focus:outline-none ${doctor.verified ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'}`}>
                                 <span className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform duration-300 ${doctor.verified ? 'translate-x-6' : 'translate-x-1'}`} />
                             </button>
-                            <span className={`ml-3 text-xs font-semibold ${doctor.verified ? 'text-green-700 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
+                            <span className={`hidden lg:inline ml-3 text-xs font-semibold ${doctor.verified ? 'text-green-700 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}`}>
                                 {doctor.verified ? 'Verified' : 'Not Verified'}
                             </span>
                         </div>
                     </td>
-                    <td className="p-3">
+                    <td className="p-2 md:p-3">
                         <button onClick={() => handleDelete(doctor.id)} className="px-3 py-1 rounded-md text-xs font-semibold bg-red-500 text-white hover:bg-red-600 transition">
                             Delete
                         </button>
@@ -281,36 +272,39 @@ const Verified_doc = () => {
             <button
                 onClick={() => paginate(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="px-4 py-2 mx-1 rounded-md bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 disabled:opacity-50"
+                className="px-3 py-1 sm:px-4 sm:py-2 mx-1 rounded-md bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 disabled:opacity-50"
             >
-                Previous
+                Prev
             </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(number => (
-                <button
-                    key={number}
-                    onClick={() => paginate(number)}
-                    className={`px-4 py-2 mx-1 rounded-md ${currentPage === number ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200'}`}
-                >
-                    {number}
-                </button>
-            ))}
+            <div className="hidden sm:flex">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(number => (
+                  <button
+                      key={number}
+                      onClick={() => paginate(number)}
+                      className={`px-3 py-1 sm:px-4 sm:py-2 mx-1 rounded-md ${currentPage === number ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200'}`}
+                  >
+                      {number}
+                  </button>
+              ))}
+            </div>
+             <div className="sm:hidden text-sm text-gray-700 dark:text-gray-300 mx-2">
+              Page {currentPage} of {totalPages}
+            </div>
             <button
                 onClick={() => paginate(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="px-4 py-2 mx-1 rounded-md bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 disabled:opacity-50"
+                className="px-3 py-1 sm:px-4 sm:py-2 mx-1 rounded-md bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 disabled:opacity-50"
             >
                 Next
             </button>
         </div>
       )}
 
-      {/* ✅ 5. The modal is now rendered based on the route, not local state */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-md">
                 <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Add New Doctor</h3>
                 <form onSubmit={handleAddNewDoctor}>
-                    {/* Form inputs are the same */}
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
                         <input type="text" name="name" value={newDoctor.name} onChange={handleNewDoctorChange} className="mt-1 p-2 w-full border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200" required />
@@ -332,7 +326,6 @@ const Verified_doc = () => {
                         <label className="ml-2 block text-sm text-gray-900 dark:text-gray-300">Verified</label>
                     </div>
                     <div className="flex justify-end">
-                        {/* ✅ This button now navigates back */}
                         <button type="button" onClick={() => navigate(-1)} className="px-4 py-2 rounded-md bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 mr-2">Cancel</button>
                         <button type="submit" className="px-4 py-2 rounded-md bg-blue-600 text-white">Add Doctor</button>
                     </div>
