@@ -45,6 +45,11 @@ export const navbarLinks = [
                 path: "/labs",
             },
             {
+                label: "Add Test",
+                icon: Package,
+                path: "/add-test",
+            },
+            {
                 label: "Lab List",
                 icon: PackagePlus,
                 path: "/list-labs",
