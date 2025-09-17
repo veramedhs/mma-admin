@@ -10,6 +10,7 @@ import Verified_doc from "./routes/verified_doc";
 import Add_labs from "./routes/add_labs";
 import Lab_list from "./routes/lab_list";
 import Verified_labs from "./routes/verified_labs";
+import Add_Test from "./routes/add_test";
 
 
 
@@ -40,6 +41,10 @@ function App() {
                 {
                     path: "/labs",
                     element: <Add_labs/>,
+                },
+                  {
+                    path: "/add-test",
+                    element: <Add_Test/>,
                 },
                 {
                     path: "/list-labs",
