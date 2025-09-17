@@ -1,11 +1,9 @@
-import React from 'react';
 import { Toaster } from 'react-hot-toast';
-import useLabStore from '@/stores/useLabStore'; // Absolute import
+import useLabStore from '@/stores/useLabStore';
 
 const Add_labs = () => {
   const { formData, loading, setFormData, setAddress, setLabLogo, createLab, resetForm } = useLabStore();
 
-  // --- No changes to logic ---
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const val = type === 'checkbox' ? checked : value;
@@ -33,7 +31,6 @@ const Add_labs = () => {
     }
   };
 
-  // --- UI Class Definitions for a modern, consistent look ---
   const inputClass = "block w-full px-3 py-2 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-slate-900 dark:text-slate-50 transition-colors";
   const labelClass = "block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1";
   const legendClass = "text-xl font-semibold text-slate-700 dark:text-slate-200 mb-4";
@@ -48,7 +45,7 @@ const Add_labs = () => {
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Basic Lab Information */}
+          {/* ... (Basic Information fieldset remains the same) ... */}
           <fieldset>
             <legend className={legendClass}>Basic Information</legend>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -70,7 +67,7 @@ const Add_labs = () => {
               </div>
             </div>
           </fieldset>
-
+          
           {/* Lab Address */}
           <fieldset>
             <legend className={legendClass}>Lab Address</legend>
@@ -89,13 +86,14 @@ const Add_labs = () => {
               </div>
               <div>
                 <label htmlFor="postalCode" className={labelClass}>Postal Code</label>
-                <input id="postalCode" type="text" name="postalCode" value={formData.address.postalCode} placeholder="90210" className={inputClass} />
+                {/* ✅ IMPROVEMENT: Added 'required' for consistency */}
+                <input id="postalCode" type="text" name="postalCode" value={formData.address.postalCode} onChange={handleAddressChange} placeholder="90210" className={inputClass} required />
               </div>
             </div>
           </fieldset>
-
-          {/* Services and Operations */}
-          <fieldset>
+          
+          {/* ... (Other fieldsets remain the same) ... */}
+           <fieldset>
             <legend className={legendClass}>Services & Operations</legend>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
@@ -114,8 +112,6 @@ const Add_labs = () => {
               </div>
             </div>
           </fieldset>
-
-          {/* Admin Controls */}
           <fieldset>
             <legend className={legendClass}>Admin Controls</legend>
             <div className="relative flex items-start">
@@ -124,7 +120,7 @@ const Add_labs = () => {
                   id="isVerified"
                   name="isVerified"
                   type="checkbox"
-                  checked={!!formData.isVerified} // Ensure it's a boolean
+                  checked={!!formData.isVerified}
                   onChange={handleChange}
                   className="h-4 w-4 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700/50 text-blue-600 focus:ring-blue-500"
                 />
@@ -136,16 +132,13 @@ const Add_labs = () => {
               </div>
             </div>
           </fieldset>
-          
-          {/* Lab Logo Upload */}
-          <fieldset>
+           <fieldset>
             <legend className={legendClass}>Assets</legend>
             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6">
                <div className="flex-grow">
                  <label htmlFor="labLogo" className={labelClass}>Lab Logo</label>
                  <input id="labLogo" type="file" name="labLogo" onChange={handleFileChange} className="block w-full text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 dark:file:bg-blue-900/40 file:text-blue-700 dark:file:text-blue-300 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/60 transition-colors" accept="image/*" />
                </div>
-              {/* Image Preview */}
               {formData.labLogo && (
                 <div className="mt-4 sm:mt-0 flex-shrink-0">
                   <div className="w-20 h-20 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-700 ring-2 ring-offset-2 dark:ring-offset-slate-800 ring-blue-500">
@@ -159,7 +152,6 @@ const Add_labs = () => {
               )}
             </div>
           </fieldset>
-
           <div className="flex justify-end pt-4">
             <button type="submit" className="w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" disabled={loading}>
               {loading ? 'Adding Lab...' : 'Add Lab'}
