@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from "react";
 import DoctorCard from "../components/Doctocard";
 
-const Doctor_list = () => {
+const DoctorList = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
@@ -17,8 +18,7 @@ const Doctor_list = () => {
         const data = await res.json();
         console.log("API Response:", data);
 
-        // ✅ Fix: agar doctors ek array hai toh direct use karo,
-        // agar object ke andar doctors field hai toh usko use karo
+        // ✅ Handle both array and object response
         if (Array.isArray(data)) {
           setDoctors(data);
         } else if (Array.isArray(data.doctors)) {
@@ -27,6 +27,7 @@ const Doctor_list = () => {
           throw new Error("Unexpected API response format");
         }
       } catch (err) {
+        console.error(err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -45,16 +46,16 @@ const Doctor_list = () => {
   }
 
   if (!doctors || doctors.length === 0) {
-    return <p className="text-gray-500 p-4">No doctors available.</p>;
+    return <p className="p-4 text-gray-500">No doctors available.</p>;
   }
 
   return (
     <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {doctors.map((doc) => (
-        <DoctorCard key={doc._id || doc.id} doctor={doc} />
+        <DoctorCard key={doc?._id || doc?.id} doctor={doc} />
       ))}
     </div>
   );
 };
 
-export default Doctor_list;
+export default DoctorList;

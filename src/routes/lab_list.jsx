@@ -9,7 +9,7 @@ import { PlusCircle, Edit, Trash2, AlertCircle } from 'lucide-react';
 // A realistic array of lab objects to simulate a real API response.
 const dummyLabs = [
   {
-    _id: 'lab_001',
+    _id: 'lab_001 ',
     labName: 'Apex Diagnostics',
     email: 'contact@apexdiag.com',
     phone: '(555) 123-4567',
