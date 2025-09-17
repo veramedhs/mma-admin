@@ -10,7 +10,7 @@ import Verified_doc from "./routes/verified_doc";
 import Add_labs from "./routes/add_labs";
 import Lab_list from "./routes/lab_list";
 import Verified_labs from "./routes/verified_labs";
-import Add_Test from "./routes/dashboard/add_test";
+import Add_Test from "./routes/add_test";
 
 function App() {
     const router = createBrowserRouter([
