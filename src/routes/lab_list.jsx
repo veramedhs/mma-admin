@@ -1,4 +1,4 @@
-// src/pages/Lab_list.js
+
 import React from "react"; // Removed useEffect as it's no longer needed here
 import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -139,5 +139,4 @@ const Lab_list = () => {
         </div>
     );
 };
-
 export default Lab_list;
