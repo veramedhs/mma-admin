@@ -2,8 +2,6 @@ import { create } from 'zustand';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-// Helper function to simulate a network delay (optional)
-// const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const useLabListStore = create((set, get) => ({
   labs: [],
@@ -14,8 +12,6 @@ const useLabListStore = create((set, get) => ({
   fetchLabs: async () => {
     set({ loading: true, error: null });
     try {
-      // Simulate delay if needed
-      // await sleep(1000);
 
       const response = await axios.get('/api/admin/labs');
 
