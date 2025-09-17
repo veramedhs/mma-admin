@@ -6,6 +6,7 @@ import { PlusCircle, Edit, Trash2 } from "lucide-react"; // Removed AlertCircle
 import useLabStore from "../stores/useLabStore";
 import { useEffect } from "react";
 
+
 const Lab_list = () => {
     // ✅ Destructuring is simplified: The component no longer needs loading, error, or the fetch function.
     const { labList, deleteLab,fetchLabList } = useLabStore();
