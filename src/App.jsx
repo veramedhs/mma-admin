@@ -11,6 +11,8 @@ import Add_labs from "./routes/add_labs";
 import Lab_list from "./routes/lab_list";
 import Verified_labs from "./routes/verified_labs";
 
+
+
 function App() {
     const router = createBrowserRouter([
         {
