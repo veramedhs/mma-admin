@@ -1,11 +1,15 @@
 // src/routes/dashboard/add_test.jsx
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
-import useTestStore from "@/stores/useTestStore";  // ✅ Absolute import
+import useTestStore from "@/stores/useTestStore";
 
 const Add_Test = () => {
-  const { formData, loading, setFormData, createTest, resetForm } = useTestStore();
+  const { formData, loading, labNames, setFormData, createTest, resetForm, fetchLabNames } = useTestStore();
+
+  useEffect(() => {
+    fetchLabNames();
+  }, [fetchLabNames]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,10 +52,12 @@ const Add_Test = () => {
                   required
                 >
                   <option value="">Select Lab</option>
-                  <option value="Central Diagnostic Lab">Central Diagnostic Lab</option>
-                  <option value="Advanced Pathology Center">Advanced Pathology Center</option>
-                  <option value="HealthPlus Lab Services">HealthPlus Lab Services</option>
-                  <option value="Prime Medical Labs">Prime Medical Labs</option>
+                  {/* ✅ Correctly map over the labNames array using the right property names */}
+                  {labNames.map((lab) => (
+                    <option key={lab._id} value={lab.labName}>
+                      {lab.labName}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -183,7 +189,7 @@ const Add_Test = () => {
               className="w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               disabled={loading}
             >
-              {loading ? 'Adding Test...' : 'Add Test'}
+              {loading ? 'Adding Test....' : 'Add Test'}
             </button>
           </div>
 
