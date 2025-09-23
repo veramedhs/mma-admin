@@ -11,6 +11,13 @@ import Add_labs from "./routes/add_labs";
 import Lab_list from "./routes/lab_list";
 import Verified_labs from "./routes/verified_labs";
 import Add_Test from "./routes/add_test";
+import Add_Symptom from "./routes/add_Symptom";
+import Symptom_list from "./routes/symptom_list";
+import Add_specialization from "./routes/add_specialization";
+import Specialization_list from "./routes/specialization_list";
+import Add_disease from "./routes/add_disease";
+import Add_treatment from "./routes/add_treatment";
+import Treatment_list from "./routes/treatment_list";
 
 
 
@@ -54,6 +61,36 @@ function App() {
                     path: "/verified-labs",
                     element: <Verified_labs/>,
                 },
+                 {
+                    path: "/symptoms/create",
+                    element: <Add_Symptom />,
+                },
+                {
+                    path: "/symptoms/list",
+                    element: <Symptom_list />,
+                },
+
+                // --- New Routes for Specializations ---
+                {
+                    path: "/specializations/create",
+                    element: <Add_specialization />,
+                },
+                {
+                    path: "/specializations/list",
+                    element: <Specialization_list />,
+                },
+                {
+                    path: "/diseases/create",
+                    element: <Add_disease />,
+                },
+                {
+                    path: "/treatments/create",
+                    element: <Add_treatment />,
+                },
+                 {
+                    path: "/treatments/list",
+                    element: <Treatment_list />,
+                }
               
             ],
         },

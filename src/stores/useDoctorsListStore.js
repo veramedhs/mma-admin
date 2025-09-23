@@ -17,6 +17,7 @@ const useDoctorsListStore = create((set) => ({
         try {
             // Using the conventional admin endpoint for fetching all doctors
             const response = await apiClient.get("/api/doctors");
+            console.log("API fetch doctors Response:", response);
 
             if (response.data && Array.isArray(response.data.doctors)) {
                 set({

@@ -2,6 +2,11 @@ import { ChartColumn, Home, NotepadText, Package, PackagePlus, Settings, Shoppin
 
 import ProfileImage from "@/assets/profile-image.jpg";
 import ProductImage from "@/assets/product-image.jpg";
+import { Stethoscope } from "lucide-react";
+import { Tags } from "lucide-react";
+import { FilePlus2 } from "lucide-react";
+import { ListChecks } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 
 export const navbarLinks = [
     {
@@ -20,20 +25,16 @@ export const navbarLinks = [
         title: "Doctors",
         links: [
             {
-                label: "Doctors list",
-                icon: Users,
-                path: "/doctors-list",
-            },
-            {
-                label: "New doctors",
+                label: "Add doctor",
                 icon: UserPlus,
                 path: "/new-doctors",
             },
             {
-                label: "Verified doctors",
-                icon: UserCheck,
-                path: "/verified-doctors",
-            },
+                label: "Doctors list",
+                icon: Users,
+                path: "/doctors-list",
+            }
+            
         ],
     },
     {
@@ -61,6 +62,59 @@ export const navbarLinks = [
             },
         ],
     },
+
+     // --- New Symptoms Section ---
+    {
+        title: "Symptoms",
+        links: [
+            {
+                label: "Add Symptom",
+                icon: Stethoscope,
+                path: "/symptoms/create",
+            },
+            {
+                label: "Symptom List",
+                icon: NotepadText,
+                path: "/symptoms/list",
+            },
+        ],
+    },
+    // --- New Specializations Section ---
+    {
+        title: "Specializations",
+        links: [
+            {
+                label: "Add Specialization",
+                icon: PackagePlus,
+                path: "/specializations/create",
+            },
+            {
+                label: "Specialization List",
+                icon: Tags,
+                path: "/specializations/list",
+            },
+        ],
+    },
+    {
+  title: "Diseases",
+  links: [
+    {
+      label: "Add Disease",
+      icon: PlusCircle, // better than PackagePlus
+      path: "/diseases/create",
+    },
+    {
+      label: "Add Treatment",
+      icon: FilePlus2, // clear add-doc style for treatments
+      path: "/treatments/create",
+    },
+    {
+      label: "Treatment List",
+      icon: ListChecks, // list-style icon
+      path: "/treatments/list",
+    },
+  ],
+},
   
 ];
 
