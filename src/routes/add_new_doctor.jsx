@@ -5,6 +5,7 @@ import useDoctorStore from '../stores/useNewDoctorStore';
 const AddDoctorProfile = () => {
     const { createDoctorProfile, loading } = useDoctorStore();
 
+
     const [formData, setFormData] = useState({
         fullName: '',
         designation: '',
@@ -17,9 +18,9 @@ const AddDoctorProfile = () => {
         specialtyInterests: '',
         researchPaper: '',
     });
-
     const [profileImg, setProfileImg] = useState(null);
 
+    // इनपुट और फाइल हैंडलर्स
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -29,9 +30,9 @@ const AddDoctorProfile = () => {
         setProfileImg(e.target.files[0]);
     };
 
+    // फॉर्म सबमिशन हैंडलर
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!profileImg) {
             toast.error('Profile image is required.');
             return;
@@ -44,10 +45,7 @@ const AddDoctorProfile = () => {
         data.append('profileImg', profileImg);
 
         try {
-            // Store already handles toast.loading/success/error via toast.promise
             await createDoctorProfile(data);
-
-            // Reset form on success
             setFormData({
                 fullName: '',
                 designation: '',
@@ -62,18 +60,20 @@ const AddDoctorProfile = () => {
             });
             setProfileImg(null);
             e.target.reset();
-        } catch {
-            new Error('Something went wrong');
+        } catch (error) {
+            console.error(error);
         }
     };
 
     const inputStyle =
-        'w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500';
-    const labelStyle = 'block mb-1 font-medium text-gray-700';
+        'w-full p-2 border border-gray-300 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-50 dark:placeholder-slate-400';
+    const labelStyle = 'block mb-1 font-medium text-gray-700 dark:text-slate-300';
 
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-            <h1 className="text-3xl font-bold mb-6">Create New Doctor Profile</h1>
+        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-slate-800">
+            <h1 className="text-3xl font-bold mb-6 text-slate-900 dark:text-slate-50">
+                Create New Doctor Profile
+            </h1>
 
             <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Full Name */}
@@ -89,8 +89,6 @@ const AddDoctorProfile = () => {
                         required
                     />
                 </div>
-
-
 
                 {/* Designation & Specialization */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -132,7 +130,7 @@ const AddDoctorProfile = () => {
                     />
                 </div>
 
-                {/* Array Fields (PIPE-separated) */}
+                {/* Array Fields */}
                 <div>
                     <label htmlFor="workHistory" className={labelStyle}>Work History (use | to separate)</label>
                     <textarea
@@ -143,61 +141,27 @@ const AddDoctorProfile = () => {
                         placeholder="AIIMS Delhi | Fortis Hospital"
                     />
                 </div>
-
                 <div>
                     <label htmlFor="education" className={labelStyle}>Education (use | to separate)</label>
-                    <textarea
-                        name="education"
-                        value={formData.education}
-                        onChange={handleChange}
-                        className={inputStyle}
-                        placeholder="MBBS - AIIMS | MD - Cardiology | PGI Chandigarh"
-                    />
+                    <textarea name="education" value={formData.education} onChange={handleChange} className={inputStyle} placeholder="MBBS - AIIMS | MD - Cardiology" />
                 </div>
-
                 <div>
                     <label htmlFor="memberships" className={labelStyle}>Memberships (use | to separate)</label>
-                    <textarea
-                        name="memberships"
-                        value={formData.memberships}
-                        onChange={handleChange}
-                        className={inputStyle}
-                        placeholder="Indian Medical Association | Cardiology Society of India"
-                    />
+                    <textarea name="memberships" value={formData.memberships} onChange={handleChange} className={inputStyle} placeholder="Indian Medical Association | CSI" />
                 </div>
-
                 <div>
                     <label htmlFor="awards" className={labelStyle}>Awards (use | to separate)</label>
-                    <textarea
-                        name="awards"
-                        value={formData.awards}
-                        onChange={handleChange}
-                        className={inputStyle}
-                        placeholder="Best Doctor Award 2020 | Research Excellence 2022"
-                    />
+                    <textarea name="awards" value={formData.awards} onChange={handleChange} className={inputStyle} placeholder="Best Doctor Award 2020" />
                 </div>
-
                 <div>
                     <label htmlFor="specialtyInterests" className={labelStyle}>Specialty Interests (use | to separate)</label>
-                    <textarea
-                        name="specialtyInterests"
-                        value={formData.specialtyInterests}
-                        onChange={handleChange}
-                        className={inputStyle}
-                        placeholder="Heart Transplant | Preventive Cardiology"
-                    />
+                    <textarea name="specialtyInterests" value={formData.specialtyInterests} onChange={handleChange} className={inputStyle} placeholder="Heart Transplant | Preventive Cardiology" />
                 </div>
-
                 <div>
                     <label htmlFor="researchPaper" className={labelStyle}>Research Papers (use | to separate)</label>
-                    <textarea
-                        name="researchPaper"
-                        value={formData.researchPaper}
-                        onChange={handleChange}
-                        className={inputStyle}
-                        placeholder="Indian Heart Journal 2021 | Journal of Cardiology 2019"
-                    />
+                    <textarea name="researchPaper" value={formData.researchPaper} onChange={handleChange} className={inputStyle} placeholder="Indian Heart Journal 2021" />
                 </div>
+
 
                 {/* Profile Image */}
                 <div>
@@ -206,16 +170,16 @@ const AddDoctorProfile = () => {
                         type="file"
                         name="profileImg"
                         onChange={handleFileChange}
-                        className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        className="w-full text-sm text-gray-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900/50 dark:file:text-blue-400 dark:hover:file:bg-blue-800/50"
                         required
                     />
                 </div>
 
-                {/* Submit */}
+                {/* Submit Button */}
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-blue-600 text-white py-3 px-4 rounded-md font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                    className="w-full bg-blue-600 text-white py-3 px-4 rounded-md font-semibold hover:bg-blue-700 disabled:bg-gray-400 dark:disabled:bg-slate-600 disabled:cursor-not-allowed transition-colors"
                 >
                     {loading ? 'Submitting...' : 'Create Profile'}
                 </button>
