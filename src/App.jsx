@@ -18,6 +18,7 @@ import Specialization_list from "./routes/specialization_list";
 import Add_disease from "./routes/add_disease";
 import Add_treatment from "./routes/add_treatment";
 import Treatment_list from "./routes/treatment_list";
+import AddDoctorProfile from "./routes/add_new_doctor";
 
 
 
@@ -39,7 +40,7 @@ function App() {
                 },
                 {
                     path: "/new-doctors",
-                    element: <New_doctors/>,
+                    element: <AddDoctorProfile/>,
                 },
                 {
                     path: "/verified-doctors",
