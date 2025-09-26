@@ -29,7 +29,6 @@ const initialState = {
   price: '', // keep string for controlled input
   currency: 'USD',
   discountPercent: '', // string for controlled input
-  // We'll keep heroImage as either a string URL (existing) or a File object from <input type="file" />
   heroImage: '', // frontend will set File on this field when uploading a new image
   precautions: '', // UI can provide comma-separated string or array
   tests: '',

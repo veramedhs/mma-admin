@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/contexts/theme-context";
 import Layout from "@/routes/layout";
 import DashboardPage from "@/routes/dashboard/page";
 import Doctor_list from "./routes/doctor_list";
-import New_doctors from "./routes/new_doc";
+// import New_doctors from "./routes/new_doc";
 import Verified_doc from "./routes/verified_doc";
 import Add_labs from "./routes/add_labs";
 import Lab_list from "./routes/lab_list";
