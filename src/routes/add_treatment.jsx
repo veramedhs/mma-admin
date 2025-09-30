@@ -9,19 +9,17 @@ const Add_treatment = () => {
   const { diseases, fetchDiseases, loading: diseasesLoading } = useDiseaseStore();
 
   useEffect(() => {
+    // Reset form on component mount to ensure a clean state
+    resetForm(); 
     fetchDiseases();
-  }, [fetchDiseases]);
+  }, [fetchDiseases, resetForm]);
 
-  // ✅ UPDATED: The handleChange function now correctly handles file inputs
-  // by checking the input `type` and accessing `e.target.files`.
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
 
     if (type === 'file') {
-      // For file inputs, set the File object in the store
       setFormData(name, files[0] || null);
     } else {
-      // For all other inputs, use the value as before
       const val = type === 'checkbox' ? checked : value;
       setFormData(name, val);
     }
@@ -77,12 +75,20 @@ const Add_treatment = () => {
             </div>
           </fieldset>
 
-          {/* --- Pricing Information --- */}
+          {/* --- Pricing Information (UPDATED) --- */}
           <fieldset>
             <legend className={legendClass}>Pricing</legend>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+               <div>
+                <label htmlFor="minPrice" className={labelClass}>Minimum Price (Required)</label>
+                <input id="minPrice" type="number" name="minPrice" value={formData.minPrice} onChange={handleChange} placeholder="e.g., 18000" className={inputClass} required min="0" disabled={loading} />
+              </div>
               <div>
-                <label htmlFor="price" className={labelClass}>Price (Required)</label>
+                <label htmlFor="maxPrice" className={labelClass}>Maximum Price (Optional)</label>
+                <input id="maxPrice" type="number" name="maxPrice" value={formData.maxPrice} onChange={handleChange} placeholder="e.g., 25000" className={inputClass} min="0" disabled={loading} />
+              </div>
+              <div>
+                <label htmlFor="price" className={labelClass}>Display Price (Required)</label>
                 <input id="price" type="number" name="price" value={formData.price} onChange={handleChange} placeholder="e.g., 22000" className={inputClass} required min="0" disabled={loading} />
               </div>
               <div>
@@ -124,19 +130,17 @@ const Add_treatment = () => {
             <legend className={legendClass}>Media & Status</legend>
              <div className="space-y-6">
                <div>
-                  {/* ✅ UPDATED: Changed from a text input to a file input for image uploads. */}
                   <label htmlFor="heroImage" className={labelClass}>Hero Image (Required)</label>
                   <input
                     id="heroImage"
-                    type="file" // Switched from 'text' to 'file'
+                    type="file"
                     name="heroImage"
-                    onChange={handleChange} // The updated handler will manage this
+                    onChange={handleChange}
                     className={`${inputClass} file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 dark:file:bg-blue-900/50 file:text-blue-700 dark:file:text-blue-300 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/70`}
                     disabled={loading}
-                    accept="image/*" // Good practice to specify accepted file types
-                    required // The store logic requires a file
+                    accept="image/*"
+                    required
                   />
-                  {/* Optional: Display the name of the selected file */}
                   {formData.heroImage && typeof formData.heroImage === 'object' && (
                     <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
                       Selected file: {formData.heroImage.name}

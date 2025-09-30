@@ -19,6 +19,7 @@ import Add_disease from "./routes/add_disease";
 import Add_treatment from "./routes/add_treatment";
 import Treatment_list from "./routes/treatment_list";
 import AddDoctorProfile from "./routes/add_new_doctor";
+import TreatmentUpdatePage from "./routes/treatment_update_page";
 
 
 
@@ -32,37 +33,37 @@ function App() {
                     index: true,
                     element: <DashboardPage />,
                 },
-               
-               
+
+
                 {
                     path: "/doctors-list",
-                    element: <Doctor_list/>,
+                    element: <Doctor_list />,
                 },
                 {
                     path: "/new-doctors",
-                    element: <AddDoctorProfile/>,
+                    element: <AddDoctorProfile />,
                 },
                 {
                     path: "/verified-doctors",
-                    element: <Verified_doc/>,
+                    element: <Verified_doc />,
                 },
                 {
                     path: "/labs",
-                    element: <Add_labs/>,
+                    element: <Add_labs />,
                 },
-                  {
+                {
                     path: "/add-test",
-                    element: <Add_Test/>,
+                    element: <Add_Test />,
                 },
                 {
                     path: "/list-labs",
-                    element: <Lab_list/>,
+                    element: <Lab_list />,
                 },
                 {
                     path: "/verified-labs",
-                    element: <Verified_labs/>,
+                    element: <Verified_labs />,
                 },
-                 {
+                {
                     path: "/symptoms/create",
                     element: <Add_Symptom />,
                 },
@@ -88,11 +89,15 @@ function App() {
                     path: "/treatments/create",
                     element: <Add_treatment />,
                 },
-                 {
+                {
                     path: "/treatments/list",
                     element: <Treatment_list />,
+                },
+                {
+                    path: "/treatments/edit/:id",
+                    element: <TreatmentUpdatePage />,
                 }
-              
+
             ],
         },
     ]);
